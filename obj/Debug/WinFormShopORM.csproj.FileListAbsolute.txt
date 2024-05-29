@@ -1,0 +1,16 @@
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\WinFormShopORM.exe.config
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\WinFormShopORM.exe
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\WinFormShopORM.pdb
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\EntityFramework.dll
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\EntityFramework.xml
+C:\Users\banan\source\repos\WinFormShopORM\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.csproj.AssemblyReference.cache
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.Form1.resources
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.Properties.Resources.resources
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.csproj.GenerateResource.cache
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.csproj.CoreCompileInputs.cache
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormS.12E70FBB.Up2Date
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.exe
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.pdb
+C:\Users\banan\source\repos\WinFormShopORM\obj\Debug\WinFormShopORM.Migrations.InitialMigration.resources
