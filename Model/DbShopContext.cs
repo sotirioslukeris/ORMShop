@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace WinFormShopORM.Model
 {
-    internal class DbShopContext: DbContext
+    public class DbShopContext: DbContext
     {
-        public DbShopContext():base("DbShopContext")
+        public DbShopContext():base("MAGAZINE")
         {
 
         }

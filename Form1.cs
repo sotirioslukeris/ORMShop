@@ -16,6 +16,8 @@ namespace WinFormShopORM
     {
         ProductLogic productController = new ProductLogic();
         ProductTypeLogic productTypeController = new ProductTypeLogic();
+
+        bool isLoaded = false;
         public Form1()
         {
             InitializeComponent();
@@ -23,10 +25,11 @@ namespace WinFormShopORM
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //List<ProductType> productTypes = new List<ProductType>();
-            //cmbType.DataSource = productTypes;
-            //cmbType.DisplayMember = "Name";
-            //cmbType.ValueMember = "Id";
+            List<ProductType> productTypes = productTypeController.GetProductTypes();
+            cmbType.DataSource = productTypes;
+            cmbType.DisplayMember = "Name";
+            cmbType.ValueMember = "Id";
+            SelectAll();
 
 
         }
@@ -39,12 +42,12 @@ namespace WinFormShopORM
             cmbType.Text = product.ProductType.Name;
             txtDesc.Text = product.Description;
             txtExpiry.Text = product.Expiry;
-            txtBrand.Text = product.Brand.ToString();   
+            txtBrand.Text = product.Brand.ToString();
         }
 
         private void ClearScreen()
         {
-            txtId.BackColor= Color.White;
+            txtId.BackColor = Color.White;
             txtId.Text = "";
             txtBrand.Text = "";
             txtDesc.Text = "";
@@ -55,51 +58,51 @@ namespace WinFormShopORM
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(txtId.Text))
-            {
-                MessageBox.Show("Въведи ID!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtId.BackColor = Color.Red;
-                txtId.Focus();
-                return;
-            }
+
             Product product = new Product();
-           
+
+            product.Id = int.Parse(txtId.Text);
+
             product.Brand = txtBrand.Text;
+
             product.Description = txtDesc.Text;
+
             product.Price = double.Parse(txtPrice.Text);
+
             product.Expiry = txtExpiry.Text;
+
             product.ProductTypeId = (int)cmbType.SelectedValue;
-            
-            
-           
 
             productController.Create(product);
-          
-            
 
-            productController.Create(product);
-            MessageBox.Show("Продуктът е успешно добавен!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Продуктът е успешно добавен!", 
+                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             ClearScreen();
-            btnSelectAll_Click(sender, e);
-            
+
+            SelectAll();
+
 
         }
 
-        private void btnSelectAll_Click(object sender, EventArgs e)
+        private void SelectAll()
         {
             List<Product> products = productController.GetProducts();
             listBox1.Items.Clear();
 
             foreach (var i in products)
             {
-                listBox1.Items.Add($"{i.Id}. Вид : {i.ProductType.Name} Марка : {i.Brand} Цена : {i.Price}" +
-                    $" Описание : {i.Description} Срок на годност : {i.Expiry}");
+                listBox1.Items.Add($"{i.Id}.  {i.ProductType.Name} {i.Brand}");
+
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             int findId = 0;
+
+            
+
             if (string.IsNullOrEmpty(txtId.Text))
             {
                 MessageBox.Show("Въведи ID!", "Внимание!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -113,10 +116,12 @@ namespace WinFormShopORM
                 findId = int.Parse(txtId.Text);
             }
 
+
             
 
-            if (string.IsNullOrEmpty(txtBrand.Text))
+            if (isLoaded == false)
             {
+                
 
                 Product findProduct = productController.Get(findId);
 
@@ -139,19 +144,43 @@ namespace WinFormShopORM
                 }
                 LoadRecord(findProduct);
 
+                isLoaded = true;
+
+                MessageBox.Show($"Това е текущата информация  за {findProduct.Brand}", "Информация", MessageBoxButtons.OK,
+                  MessageBoxIcon.Information);
+
             }
 
             else
             {
+
+
                 Product updatedProduct = new Product();
+
                 updatedProduct.Brand = txtBrand.Text;
+
                 updatedProduct.Description = txtDesc.Text;
+
                 updatedProduct.Price = double.Parse(txtPrice.Text);
+
                 updatedProduct.Expiry = txtExpiry.Text;
+
                 updatedProduct.ProductTypeId = (int)cmbType.SelectedValue;
 
                 productController.Update(findId, updatedProduct);
+
+                isLoaded = false;
+
+                MessageBox.Show("Информацията бе успешно обновена!", "Информация", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                SelectAll();
+
+                ClearScreen();
             }
+
+
+
 
 
 
@@ -174,50 +203,58 @@ namespace WinFormShopORM
                 findId = int.Parse(txtId.Text);
             }
 
-            if (string.IsNullOrEmpty(txtBrand.Text))
+            Product findProduct = productController.Get(findId);
+
+            if (findProduct == null)
             {
-                Product findProduct = productController.Get(findId);
+                DialogResult dr = MessageBox.Show("Не бе намерен продукт с посоченото ID!", "Грешка!",
+                    MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
 
-                if (findProduct == null)
+                if (dr == DialogResult.Retry)
                 {
-                    DialogResult dr = MessageBox.Show("Не бе намерен продукт с посоченото ID!", "Грешка!",
-                       MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-
-                    if (dr == DialogResult.Retry)
-                    {
-                        txtId.BackColor = Color.Red;
-                        txtId.Text = "";
-                        txtId.Focus();
-                        return;
-                    }
-
-                    else
-                    {
-                        return;
-                    }
+                    txtId.BackColor = Color.Red;
+                    txtId.Text = "";
+                    txtId.Focus();
+                    return;
                 }
-                LoadRecord(findProduct);
-
-
-
+                else
+                {
+                    return;
+                }
             }
 
             else
             {
-                DialogResult dr = MessageBox.Show("Желате ли да изтриете следния запис?", "Внимание!",
-                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                productController.Delete(findId);
+                DialogResult dialogResult = MessageBox.Show("Желате ли да изтриете следния запис?", "Внимание!",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if (dr == DialogResult.Yes)
+                if (dialogResult == DialogResult.Yes)
                 {
-                    productController.Delete(findId);
-                    return;
+                    try
+                    {
+                        productController.Delete(findId);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return;
+                    }
+
+                    finally
+                    {
+                        ClearScreen();
+                        SelectAll();
+                    }
+
+
+
                 }
 
-                btnSelectAll_Click(sender, e);
+                else return;
+
+
             }
 
-           
 
 
 
@@ -227,4 +264,7 @@ namespace WinFormShopORM
 
         }
     }
+
 }
+
+

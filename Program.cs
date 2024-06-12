@@ -15,7 +15,7 @@ namespace WinFormShopORM
         [STAThread]
         static void Main()
         {
-            //Display display = new Display();
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

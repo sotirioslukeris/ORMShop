@@ -37,16 +37,19 @@ namespace WinFormShopORM.Controller
         {
             Product findProduct = _shopDbContext.Products.Find(id);
 
-            if (findProduct!= null)
+            if (findProduct== null)
             {
                 return;
             }
 
+            
             findProduct.Brand = product.Brand;
             findProduct.Expiry = product.Expiry;
             findProduct.Description = product.Description;
             findProduct.ProductTypeId = product.ProductTypeId;
             findProduct.Price = product.Price;
+
+            _shopDbContext.SaveChanges();
         }
 
         public void Delete(int id)
